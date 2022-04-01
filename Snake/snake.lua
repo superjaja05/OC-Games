@@ -6,10 +6,14 @@ local computer = require("computer")
 local thread = require("thread")
 local event = require("event")
 
+gpu.setResolution(60,30)
+
+gpu.setResolution(30,15)
+
+term.clear()
+
 print("Welcome to the snake game!")
 os.sleep(1)
-
-gpu.setResolution(60,30)
 
 if component.isAvailable("chat_box") then
     cb = component.chat_box
@@ -128,11 +132,12 @@ function regenpoison()
 end
 
 while true do
-print("Choose a Difficulty:\n1. Easy (Slow)\n2. Medium (Semi-Fast)\n3. Hard (Fast)\n4. Hardcore (Very Fast)")
+    print("Choose a Difficulty:\n1. Easy (Slow)\n2. Medium (Semi-Fast)\n3. Hard (Fast)\n4. Hardcore (Very Fast)")
 
-diff1 = tonumber(io.read())
+    diff1 = tonumber(io.read())
 
-if diff1 > 0 and diff1 < 5 then break end
+    if diff1 == 5 then gpu.setResolution(160,50) os.exit() end
+    if diff1 > 0 and diff1 < 5 then gpu.setResolution(60,30) break else print("ERROR!") end
 end
 
 difflist = {
@@ -268,4 +273,5 @@ print("Game Over!")
 print("Score: "..score.." ("..(snakelength-3).." Fruits)")
 
 os.sleep(5)
-os.exit()
+
+computer.shutdown(true)
