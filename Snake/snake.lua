@@ -177,6 +177,11 @@ snakelength = 3
 
 snakebody = {}
 
+textures = {
+    " ",
+    "░"
+}
+
 score = 0
 
 thread.create(function()
@@ -205,19 +210,24 @@ while true do
     gpu.fill(1,1,60,1," ")
     term.setCursor(1,1)
     term.write("Score: "..score.." ("..(snakelength-3).." fruits) Difficulty: "..diff1)
+    gpu.setBackground(0x666666)
+    gpu.fill(1,2,2,29," ")
+    gpu.fill(59,2,2,29," ")
+    gpu.fill(1,30,60,1," ")
     gpu.setBackground(0x000000)
 
     if drawfruit then
         pixel(fruitcoord.x,fruitcoord.y,fruitcolor)
     end
     if drawpoison then
-        pixel(poisoncoord.x,poisoncoord.y,poisoncolor,"░",0xFF0000)
+        pixel(poisoncoord.x,poisoncoord.y,poisoncolor,"╳",0xFF0000)
     end
     if drawsnake then
         pixel(snakehead.x,snakehead.y,0xBBFF66)
         for i1=1, snakelength do
             if snakebody[i1] ~= nil then
-                pixel(snakebody[i1].x,snakebody[i1].y,0x99FF44)
+                local ran1 = math.random(1,2)
+                pixel(snakebody[i1].x,snakebody[i1].y,0x99FF44,"░",0x33BB11)
             end
         end
     end
@@ -228,7 +238,7 @@ while true do
     os.sleep(difficulty.speed)
 
     if checkfront(dir,snakehead) == 10092352 then
-        computer.beep(300,0.5)
+        computer.beep(200,0.5)
         break
     end
 
@@ -245,6 +255,10 @@ while true do
         snakelength = snakelength-2
         regenpoison()
         computer.beep(300,0.1)
+        if snakelength < 1 then
+            computer.beep(200,0.5)
+            break
+        end
     end
 end
 
